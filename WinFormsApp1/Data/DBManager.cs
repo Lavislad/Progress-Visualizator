@@ -13,6 +13,23 @@ namespace ProgressVisualizer.Data
             InitializeDatabase();
         }
 
+        public SqliteConnection GetConnection()
+        {
+            var connection =
+                new SqliteConnection(connectionString);
+
+            connection.Open();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText =
+                "PRAGMA foreign_keys = ON;";
+
+            command.ExecuteNonQuery();
+
+            return connection;
+        }
+
         private void InitializeDatabase()
         {
             using var connection = GetConnection();
@@ -25,7 +42,8 @@ namespace ProgressVisualizer.Data
                     Name TEXT NOT NULL,
                     Description TEXT,
                     XAxisName TEXT NOT NULL,
-                    XAxisType TEXT NOT NULL,
+                    XAxisType TEXT NOT NULL
+                        CHECK (XAxisType IN ('Number', 'Text')),
                     YAxisName TEXT NOT NULL,
                     YAxisUnit TEXT,
                     CreatedDate TEXT NOT NULL
@@ -45,18 +63,6 @@ namespace ProgressVisualizer.Data
             ";
 
             command.ExecuteNonQuery();
-        }
-
-        public SqliteConnection GetConnection()
-        {
-            var connection = new SqliteConnection(connectionString);
-            connection.Open();
-
-            using var command = connection.CreateCommand();
-            command.CommandText = "PRAGMA foreign_keys = ON;";
-            command.ExecuteNonQuery();
-
-            return connection;
         }
     }
 }
