@@ -1,18 +1,24 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
+using ProgressVisualizer.Data;
 
 namespace ProgressVisualizer
 {
     public partial class MainForm : Form
     {
+        private DBManager db;
+
         public MainForm()
         {
             InitializeComponent();
-        }
 
-        // =========================================================
-        // √–¿‘» »
-        // =========================================================
+            string databasePath = Path.Combine(
+                Application.StartupPath,
+                "progress.db");
+
+            db = new DBManager(databasePath);
+        }
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
