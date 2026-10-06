@@ -11,6 +11,7 @@ namespace ProgressVisualizer
     {
         private DBManager db;
         private ChartRepository chartRepository;
+        private DataPointRepository dataPointRepository;
 
         public MainForm()
         {
@@ -20,6 +21,7 @@ namespace ProgressVisualizer
 
             db = new DBManager(databasePath);
             chartRepository = new ChartRepository(db);
+            dataPointRepository = new DataPointRepository(db);
 
             LoadCharts();
         }
@@ -36,29 +38,43 @@ namespace ProgressVisualizer
             }
         }
 
+        private void LoadPoints(Chart chart)
+        {
+            dgvPoints.Rows.Clear();
+
+            List<DataPoint> points =
+                dataPointRepository.GetByChartId(
+                    chart.Id);
+
+            foreach (DataPoint point in points)
+            {
+                int rowIndex =
+                    dgvPoints.Rows.Add(
+                        point.XValue,
+                        point.YValue);
+
+                dgvPoints.Rows[rowIndex].Tag =
+                    point;
+            }
+        }
+
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             // Здесь позже будет поиск графиков через SQLite.
         }
 
-        private void LstCharts_SelectedIndexChanged(
-            object sender,
-            EventArgs e)
+        private void LstCharts_SelectedIndexChanged(object sender,EventArgs e)
         {
             if (lstCharts.SelectedItem == null)
-            {
-                lblChartName.Text = "График не выбран";
-                lblChartDescription.Text = "";
                 return;
-            }
 
-            string chartName = lstCharts.SelectedItem.ToString();
+            Chart chart = (Chart)lstCharts.SelectedItem;
 
-            lblChartName.Text = chartName;
-            lblChartDescription.Text = "Описание графика";
+            lblChartName.Text = chart.Name;
 
-            // Позже здесь будет загрузка данных
-            // выбранного графика из SQLite.
+            lblChartDescription.Text = chart.Description;
+
+            LoadPoints(chart);
         }
 
         private void BtnCreateChart_Click(object sender, EventArgs e)
@@ -146,8 +162,8 @@ namespace ProgressVisualizer
         // =========================================================
 
         private void BtnAddPoint_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             if (lstCharts.SelectedItem == null)
             {
@@ -160,61 +176,119 @@ namespace ProgressVisualizer
                 return;
             }
 
-            MessageBox.Show(
-                "Здесь будет открываться форма добавления точки.",
-                "Добавление точки",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            Chart chart =
+                (Chart)lstCharts.SelectedItem;
+
+            using DataPointForm form =
+                new DataPointForm(chart);
+
+            if (form.ShowDialog(this) ==
+                DialogResult.OK)
+            {
+                DataPoint point =
+                    form.ResultPoint;
+
+                if (point == null)
+                    return;
+
+                int id =
+                    dataPointRepository.Add(point);
+
+                point.Id = id;
+
+                LoadPoints(chart);
+            }
         }
 
         private void BtnEditPoint_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             if (dgvPoints.SelectedRows.Count == 0)
             {
                 MessageBox.Show(
                     "Выберите точку.",
-                    "Изменение точки",
+                    "Изменение",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
 
-            MessageBox.Show(
-                "Здесь будет открываться форма изменения точки.",
-                "Изменение точки",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            DataGridViewRow row =
+                dgvPoints.SelectedRows[0];
+
+            DataPoint? point =
+                row.Tag as DataPoint;
+
+            if (point == null)
+                return;
+
+            Chart chart =
+                (Chart)lstCharts.SelectedItem;
+
+            using DataPointForm form =
+                new DataPointForm(
+                    chart,
+                    point);
+
+            if (form.ShowDialog(this) ==
+                DialogResult.OK)
+            {
+                DataPoint? updatedPoint =
+                    form.ResultPoint;
+
+                if (updatedPoint == null)
+                    return;
+
+                dataPointRepository.Update(
+                    updatedPoint);
+
+                LoadPoints(chart);
+            }
         }
 
         private void BtnDeletePoint_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             if (dgvPoints.SelectedRows.Count == 0)
             {
                 MessageBox.Show(
                     "Выберите точку.",
-                    "Удаление точки",
+                    "Удаление",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
 
-            DialogResult result = MessageBox.Show(
-                "Удалить выбранную точку?",
-                "Удаление точки",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            DataGridViewRow row =
+                dgvPoints.SelectedRows[0];
 
-            if (result == DialogResult.Yes)
-            {
-                dgvPoints.Rows.Remove(
-                    dgvPoints.SelectedRows[0]);
-            }
+            DataPoint? point =
+                row.Tag as DataPoint;
+
+            if (point == null)
+                return;
+
+            DialogResult result =
+                MessageBox.Show(
+                    "Удалить выбранную точку?",
+                    "Подтверждение",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            dataPointRepository.Delete(
+                point.Id);
+
+            Chart chart =
+                (Chart)lstCharts.SelectedItem;
+
+            LoadPoints(chart);
         }
     }
 }
