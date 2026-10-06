@@ -30,6 +30,9 @@ namespace ProgressVisualizer.Forms
 
             this.chart = chart;
 
+            grpXAxis.Enabled = false;
+            grpYAxis.Enabled = false;
+
             LoadChartData();
         }
 
