@@ -1,23 +1,39 @@
+using ProgressVisualizer.Data;
+using ProgressVisualizer.Models;
+using ProgressVisualizer.Forms;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using ProgressVisualizer.Data;
 
 namespace ProgressVisualizer
 {
     public partial class MainForm : Form
     {
         private DBManager db;
+        private ChartRepository chartRepository;
 
         public MainForm()
         {
             InitializeComponent();
 
-            string databasePath = Path.Combine(
-                Application.StartupPath,
-                "progress.db");
+            string databasePath = Path.Combine(Application.StartupPath,"progress.db");
 
             db = new DBManager(databasePath);
+            chartRepository = new ChartRepository(db);
+
+            LoadCharts();
+        }
+
+        private void LoadCharts()
+        {
+            lstCharts.Items.Clear();
+
+            List<Chart> charts = chartRepository.GetAll();
+
+            foreach (Chart chart in charts)
+            {
+                lstCharts.Items.Add(chart);
+            }
         }
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
@@ -45,15 +61,29 @@ namespace ProgressVisualizer
             // выбранного графика из SQLite.
         }
 
-        private void BtnCreateChart_Click(
-            object sender,
-            EventArgs e)
+        private void BtnCreateChart_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Здесь будет открываться форма создания графика.",
-                "Создание графика",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            using ChartForm form = new ChartForm();
+
+            if (form.ShowDialog(this) == DialogResult.OK)
+            {
+                Chart chart = form.ResultChart;
+
+                if (chart == null)
+                    return;
+
+                int id = chartRepository.Add(chart);
+
+                chart.Id = id;
+
+                LoadCharts();
+
+                MessageBox.Show(
+                    "График успешно создан.",
+                    "Успешно",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         private void BtnEditChart_Click(

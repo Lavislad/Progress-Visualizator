@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProgressVisualizer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a89d42d87bc741d8a87fe043b5898163ba51f550")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f33dc3147680996389453ea5161944b08ceffe78")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProgressVisualizer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProgressVisualizer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
