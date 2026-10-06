@@ -15,6 +15,8 @@
         private Button btnSave;
         private Button btnCancel;
 
+        private DateTimePicker dtpXValue;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing &&
@@ -76,6 +78,19 @@
                 new System.Drawing.Size(
                     380,
                     35);
+
+            //
+            // dtpXValue
+            //
+
+            dtpXValue = new DateTimePicker();
+
+            dtpXValue.Format = DateTimePickerFormat.Short;
+            dtpXValue.Location = new Point(150, 70);
+            dtpXValue.Size = new Size(250, 27);
+            dtpXValue.Visible = false;
+
+            Controls.Add(dtpXValue);
 
             // =====================================================
             // X

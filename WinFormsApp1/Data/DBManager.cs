@@ -43,7 +43,7 @@ namespace ProgressVisualizer.Data
                     Description TEXT,
                     XAxisName TEXT NOT NULL,
                     XAxisType TEXT NOT NULL
-                        CHECK (XAxisType IN ('Number', 'Text')),
+                        CHECK (XAxisType IN ('Number', 'Text', 'Date')),
                     YAxisName TEXT NOT NULL,
                     YAxisUnit TEXT,
                     CreatedDate TEXT NOT NULL

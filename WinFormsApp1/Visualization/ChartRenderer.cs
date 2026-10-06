@@ -10,9 +10,9 @@ namespace ProgressVisualizer.Visualization
     public class ChartRenderer
     {
         public void Draw(
-            FormsPlot formsPlot,
-            Chart chart,
-            List<DataPoint> points)
+    FormsPlot formsPlot,
+    Chart chart,
+    List<DataPoint> points)
         {
             formsPlot.Plot.Clear();
 
@@ -29,6 +29,13 @@ namespace ProgressVisualizer.Visualization
                     chart,
                     points);
             }
+            else if (chart.XAxisType == "Date")
+            {
+                DrawDateX(
+                    formsPlot,
+                    chart,
+                    points);
+            }
             else
             {
                 DrawTextX(
@@ -38,6 +45,64 @@ namespace ProgressVisualizer.Visualization
             }
 
             formsPlot.Refresh();
+        }
+
+        private void DrawDateX(
+    FormsPlot formsPlot,
+    Chart chart,
+    List<DataPoint> points)
+        {
+            var validPoints = new List<(DateTime Date, double Y)>();
+
+            foreach (DataPoint point in points)
+            {
+                if (DateTime.TryParse(
+                    point.XValue,
+                    out DateTime date))
+                {
+                    validPoints.Add(
+                        (date, point.YValue));
+                }
+            }
+
+            if (validPoints.Count == 0)
+                return;
+
+            validPoints = validPoints
+                .OrderBy(p => p.Date)
+                .ToList();
+
+            double[] xs = validPoints
+                .Select(p =>
+                    p.Date.ToOADate())
+                .ToArray();
+
+            double[] ys = validPoints
+                .Select(p => p.Y)
+                .ToArray();
+
+            formsPlot.Plot.Add.Scatter(
+                xs,
+                ys);
+
+            formsPlot.Plot.Axes.AutoScale();
+
+            formsPlot.Plot.XLabel(
+                chart.XAxisName);
+
+            string yLabel =
+                chart.YAxisName;
+
+            if (!string.IsNullOrWhiteSpace(
+                chart.YAxisUnit))
+            {
+                yLabel +=
+                    $" ({chart.YAxisUnit})";
+            }
+
+            formsPlot.Plot.YLabel(yLabel);
+
+            formsPlot.Plot.Axes.DateTimeTicksBottom();
         }
 
         private void DrawNumericX(

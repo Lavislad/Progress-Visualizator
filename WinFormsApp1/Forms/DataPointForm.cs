@@ -23,15 +23,10 @@ namespace ProgressVisualizer.Forms
 
             this.chart = chart;
 
-            point = null;
+            txtXValue.Text = chart.XAxisName;
+            txtYValue.Text = chart.YAxisName;
 
-            lblXTitle.Text =
-                $"{chart.XAxisName}:";
-
-            lblYTitle.Text =
-                $"{chart.YAxisName}:";
-
-            Text = "Добавление точки";
+            ConfigureXAxis();
         }
 
         // =========================================================
@@ -39,29 +34,50 @@ namespace ProgressVisualizer.Forms
         // =========================================================
 
         public DataPointForm(
-            Chart chart,
-            DataPoint point)
+     Chart chart,
+     DataPoint point)
         {
             InitializeComponent();
 
             this.chart = chart;
-
             this.point = point;
 
-            txtXValue.Text =
-                point.XValue;
+            txtXValue.Text = chart.XAxisName;
+            txtYValue.Text = chart.YAxisName;
+
+            ConfigureXAxis();
 
             txtYValue.Text =
                 point.YValue.ToString(
                     CultureInfo.InvariantCulture);
 
-            lblXTitle.Text =
-                $"{chart.XAxisName}:";
+            if (chart.XAxisType == "Date")
+            {
+                if (DateTime.TryParse(
+                    point.XValue,
+                    out DateTime date))
+                {
+                    dtpXValue.Value = date;
+                }
+            }
+            else
+            {
+                txtXValue.Text = point.XValue;
+            }
+        }
 
-            lblYTitle.Text =
-                $"{chart.YAxisName}:";
-
-            Text = "Изменение точки";
+        private void ConfigureXAxis()
+        {
+            if (chart.XAxisType == "Date")
+            {
+                txtXValue.Visible = false;
+                dtpXValue.Visible = true;
+            }
+            else
+            {
+                txtXValue.Visible = true;
+                dtpXValue.Visible = false;
+            }
         }
 
         // =========================================================
@@ -83,19 +99,58 @@ namespace ProgressVisualizer.Forms
                 };
             }
 
-            point.XValue =
-                txtXValue.Text.Trim();
+            string xValue;
 
-            point.YValue =
-                double.Parse(
-                    txtYValue.Text.Trim(),
-                    CultureInfo.InvariantCulture);
+            if (chart.XAxisType == "Date")
+            {
+                xValue = dtpXValue.Value
+                    .ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                xValue = txtXValue.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(xValue))
+                {
+                    MessageBox.Show(
+                        "Введите значение X.",
+                        "Ошибка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+            }
+
+            string yText = txtYValue.Text.Trim().Replace(',', '.');
+
+            if (!double.TryParse(
+                yText,
+                NumberStyles.Float,
+                CultureInfo.InvariantCulture,
+                out double yValue))
+            {
+                MessageBox.Show(
+                    "Введите корректное числовое значение Y.",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            if (point == null)
+            {
+                point = new DataPoint();
+            }
+
+            point.ChartId = chart.Id;
+            point.XValue = xValue;
+            point.YValue = yValue;
 
             ResultPoint = point;
 
-            DialogResult =
-                DialogResult.OK;
-
+            DialogResult = DialogResult.OK;
             Close();
         }
 

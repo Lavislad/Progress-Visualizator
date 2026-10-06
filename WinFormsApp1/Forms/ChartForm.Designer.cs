@@ -202,6 +202,9 @@
 
             cmbXAxisType.Items.Add("Number");
             cmbXAxisType.Items.Add("Text");
+            cmbXAxisType.Items.Add("Date");
+
+            cmbXAxisType.SelectedIndex = 0;
 
             // =====================================================
             // Y AXIS
