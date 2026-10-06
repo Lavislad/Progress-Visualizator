@@ -1,4 +1,6 @@
-﻿namespace ProgressVisualizer
+﻿using ScottPlot.WinForms;
+
+namespace ProgressVisualizer
 {
     partial class MainForm
     {
@@ -10,6 +12,8 @@
         // =========================================================
         // ЭЛЕМЕНТЫ ФОРМЫ
         // =========================================================
+
+        private FormsPlot formsPlot;
 
         private Label lblTitle;
 
@@ -78,7 +82,6 @@
             btnDeleteChart = new Button();
             rightPanel = new Panel();
             pnlChart = new Panel();
-            lblPlotPlaceholder = new Label();
             chartInfo = new Panel();
             lblChartDescription = new Label();
             lblChartName = new Label();
@@ -91,6 +94,7 @@
             btnAddPoint = new Button();
             btnEditPoint = new Button();
             btnDeletePoint = new Button();
+            formsPlot = new FormsPlot();
             ((System.ComponentModel.ISupportInitialize)mainSplit).BeginInit();
             mainSplit.Panel1.SuspendLayout();
             mainSplit.Panel2.SuspendLayout();
@@ -104,6 +108,11 @@
             ((System.ComponentModel.ISupportInitialize)dgvPoints).BeginInit();
             pointButtons.SuspendLayout();
             SuspendLayout();
+            //
+            // formsPlot
+            //
+            formsPlot.Dock = DockStyle.Fill;
+            pnlChart.Controls.Add(formsPlot);
             // 
             // lblTitle
             // 
@@ -240,16 +249,6 @@
             pnlChart.Name = "pnlChart";
             pnlChart.Size = new Size(936, 385);
             pnlChart.TabIndex = 0;
-            // 
-            // lblPlotPlaceholder
-            // 
-            lblPlotPlaceholder.AutoSize = true;
-            lblPlotPlaceholder.Font = new Font("Segoe UI", 14F);
-            lblPlotPlaceholder.Location = new Point(30, 30);
-            lblPlotPlaceholder.Name = "lblPlotPlaceholder";
-            lblPlotPlaceholder.Size = new Size(260, 25);
-            lblPlotPlaceholder.TabIndex = 0;
-            lblPlotPlaceholder.Text = "Здесь будет график ScottPlot";
             // 
             // chartInfo
             // 

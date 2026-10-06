@@ -1,6 +1,8 @@
 using ProgressVisualizer.Data;
 using ProgressVisualizer.Models;
 using ProgressVisualizer.Forms;
+using System.Collections.Generic;
+using ProgressVisualizer.Visualization;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -12,6 +14,7 @@ namespace ProgressVisualizer
         private DBManager db;
         private ChartRepository chartRepository;
         private DataPointRepository dataPointRepository;
+        private ChartRenderer chartRenderer;
 
         public MainForm()
         {
@@ -22,6 +25,7 @@ namespace ProgressVisualizer
             db = new DBManager(databasePath);
             chartRepository = new ChartRepository(db);
             dataPointRepository = new DataPointRepository(db);
+            chartRenderer = new ChartRenderer();
 
             LoadCharts();
         }
@@ -30,7 +34,9 @@ namespace ProgressVisualizer
         {
             lstCharts.Items.Clear();
 
-            List<Chart> charts = chartRepository.GetAll();
+            string searchText = txtSearch.Text.Trim();
+
+            List<Chart> charts = chartRepository.Search(searchText);
 
             foreach (Chart chart in charts)
             {
@@ -56,11 +62,18 @@ namespace ProgressVisualizer
                 dgvPoints.Rows[rowIndex].Tag =
                     point;
             }
+
+            chartRenderer.Draw(
+                formsPlot,
+                chart,
+                points);
         }
 
-        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        private void TxtSearch_TextChanged(
+    object sender,
+    EventArgs e)
         {
-            // Здесь позже будет поиск графиков через SQLite.
+            LoadCharts();
         }
 
         private void LstCharts_SelectedIndexChanged(object sender,EventArgs e)
@@ -103,13 +116,13 @@ namespace ProgressVisualizer
         }
 
         private void BtnEditChart_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             if (lstCharts.SelectedItem == null)
             {
                 MessageBox.Show(
-                    "Выберите график.",
+                    "Сначала выберите график.",
                     "Изменение графика",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -117,21 +130,49 @@ namespace ProgressVisualizer
                 return;
             }
 
-            MessageBox.Show(
-                "Здесь будет открываться форма редактирования графика.",
-                "Изменение графика",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            Chart chart = (Chart)lstCharts.SelectedItem;
+
+            using ChartForm form = new ChartForm(chart);
+
+            if (form.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            Chart? updatedChart = form.ResultChart;
+
+            if (updatedChart == null)
+                return;
+
+            updatedChart.Id = chart.Id;
+
+            chartRepository.Update(updatedChart);
+
+            LoadCharts();
+
+            SelectChartById(updatedChart.Id);
+        }
+
+        private void SelectChartById(int chartId)
+        {
+            for (int i = 0; i < lstCharts.Items.Count; i++)
+            {
+                Chart chart = (Chart)lstCharts.Items[i];
+
+                if (chart.Id == chartId)
+                {
+                    lstCharts.SelectedIndex = i;
+                    return;
+                }
+            }
         }
 
         private void BtnDeleteChart_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             if (lstCharts.SelectedItem == null)
             {
                 MessageBox.Show(
-                    "Выберите график.",
+                    "Сначала выберите график.",
                     "Удаление графика",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -139,23 +180,30 @@ namespace ProgressVisualizer
                 return;
             }
 
+            Chart chart = (Chart)lstCharts.SelectedItem;
+
             DialogResult result = MessageBox.Show(
-                "Вы действительно хотите удалить выбранный график?",
-                "Удаление графика",
+                $"Удалить график \"{chart.Name}\"?",
+                "Подтверждение удаления",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
-            {
-                lstCharts.Items.Remove(
-                    lstCharts.SelectedItem);
+            if (result != DialogResult.Yes)
+                return;
 
-                lblChartName.Text = "График не выбран";
-                lblChartDescription.Text = "";
+            chartRepository.Delete(chart.Id);
 
-                dgvPoints.Rows.Clear();
-            }
+            LoadCharts();
+
+            dgvPoints.Rows.Clear();
+
+            formsPlot.Plot.Clear();
+            formsPlot.Refresh();
+
+            lblChartName.Text = "График не выбран";
+            lblChartDescription.Text = "";
         }
+
 
         // =========================================================
         // ТОЧКИ
