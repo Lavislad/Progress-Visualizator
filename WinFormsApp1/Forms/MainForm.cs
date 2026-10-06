@@ -1,11 +1,11 @@
-using ProgressVisualizer.Data;
-using ProgressVisualizer.Models;
-using ProgressVisualizer.Forms;
-using System.Collections.Generic;
-using ProgressVisualizer.Visualization;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using ProgressVisualizer.Data;
+using ProgressVisualizer.Forms;
+using ProgressVisualizer.Models;
+using ProgressVisualizer.Visualization;
 
 namespace ProgressVisualizer
 {
@@ -20,7 +20,7 @@ namespace ProgressVisualizer
         {
             InitializeComponent();
 
-            string databasePath = Path.Combine(Application.StartupPath,"progress.db");
+            string databasePath = Path.Combine(Application.StartupPath, "progress.db");
 
             db = new DBManager(databasePath);
             chartRepository = new ChartRepository(db);
@@ -48,9 +48,7 @@ namespace ProgressVisualizer
         {
             dgvPoints.Rows.Clear();
 
-            List<DataPoint> points =
-                dataPointRepository.GetByChartId(
-                    chart.Id);
+            List<DataPoint> points = dataPointRepository.GetByChartId(chart.Id);
 
             foreach (DataPoint point in points)
             {
@@ -59,8 +57,7 @@ namespace ProgressVisualizer
                         point.XValue,
                         point.YValue);
 
-                dgvPoints.Rows[rowIndex].Tag =
-                    point;
+                dgvPoints.Rows[rowIndex].Tag = point;
             }
 
             chartRenderer.Draw(
@@ -69,14 +66,12 @@ namespace ProgressVisualizer
                 points);
         }
 
-        private void TxtSearch_TextChanged(
-    object sender,
-    EventArgs e)
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             LoadCharts();
         }
 
-        private void LstCharts_SelectedIndexChanged(object sender,EventArgs e)
+        private void LstCharts_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lstCharts.SelectedItem == null)
                 return;
@@ -106,12 +101,6 @@ namespace ProgressVisualizer
                 chart.Id = id;
 
                 LoadCharts();
-
-                MessageBox.Show(
-                    "График успешно создан.",
-                    "Успешно",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
             }
         }
 

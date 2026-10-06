@@ -1,7 +1,7 @@
-﻿using ProgressVisualizer.Models;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using ProgressVisualizer.Models;
 
 namespace ProgressVisualizer.Forms
 {

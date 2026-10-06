@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using ScottPlot.WinForms;
 using ProgressVisualizer.Models;
+using ScottPlot.WinForms;
 
 namespace ProgressVisualizer.Visualization
 {
