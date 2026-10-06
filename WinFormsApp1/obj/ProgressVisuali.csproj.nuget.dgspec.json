@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\WinFormsApp1.csproj": {}
+    "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\ProgressVisuali.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\WinFormsApp1.csproj": {
+    "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\ProgressVisuali.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\WinFormsApp1.csproj",
-        "projectName": "WinFormsApp1",
-        "projectPath": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\WinFormsApp1.csproj",
+        "projectUniqueName": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\ProgressVisuali.csproj",
+        "projectName": "ProgressVisuali",
+        "projectPath": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\ProgressVisuali.csproj",
         "packagesPath": "C:\\Users\\Владислав\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\obj\\",
         "projectStyle": "PackageReference",

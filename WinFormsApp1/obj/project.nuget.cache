@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dOKjAjWwCmk=",
+  "dgSpecHash": "ZRnDsNw6wNA=",
   "success": true,
-  "projectFilePath": "D:\\Документы\\Практика ПП 01\\WinFormsApp1\\WinFormsApp1\\WinFormsApp1.csproj",
+  "projectFilePath": "C:\\Users\\Владислав\\Documents\\Практика ПП 01\\Progress-Visualizator\\WinFormsApp1\\ProgressVisualizer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Владислав\\.nuget\\packages\\microsoft.data.sqlite\\10.0.12\\microsoft.data.sqlite.10.0.12.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.12\\microsoft.data.sqlite.core.10.0.12.nupkg.sha512",

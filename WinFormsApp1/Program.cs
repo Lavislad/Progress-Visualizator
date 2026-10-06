@@ -1,4 +1,4 @@
-namespace WinFormsApp1
+namespace ProgressVisualizer
 {
     internal static class Program
     {
@@ -12,7 +12,7 @@ namespace WinFormsApp1
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             string dbPath = Path.Combine(Application.StartupPath, "progress.db");
-            Application.Run(new Form1());
+            Application.Run(new MainForm());
         }
     }
 }
