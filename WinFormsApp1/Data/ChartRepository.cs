@@ -12,10 +12,6 @@ namespace ProgressVisualizer.Data
             this.db = db;
         }
 
-        // =========================================================
-        // ДОБАВЛЕНИЕ ГРАФИКА
-        // =========================================================
-
         public int Add(Chart chart)
         {
             using var connection = db.GetConnection();
@@ -79,10 +75,6 @@ namespace ProgressVisualizer.Data
             return (int)id;
         }
 
-        // =========================================================
-        // ПОЛУЧЕНИЕ ВСЕХ ГРАФИКОВ
-        // =========================================================
-
         public List<Chart> GetAll()
         {
             List<Chart> charts = new List<Chart>();
@@ -141,10 +133,6 @@ namespace ProgressVisualizer.Data
 
             return charts;
         }
-
-        // =========================================================
-        // ПОЛУЧЕНИЕ ГРАФИКА ПО ID
-        // =========================================================
 
         public Chart? GetById(int id)
         {
@@ -205,10 +193,6 @@ namespace ProgressVisualizer.Data
             return chart;
         }
 
-        // =========================================================
-        // ИЗМЕНЕНИЕ ГРАФИКА
-        // =========================================================
-
         public void Update(Chart chart)
         {
             using var connection = db.GetConnection();
@@ -257,10 +241,6 @@ namespace ProgressVisualizer.Data
             command.ExecuteNonQuery();
         }
 
-        // =========================================================
-        // УДАЛЕНИЕ ГРАФИКА
-        // =========================================================
-
         public void Delete(int id)
         {
             using var connection = db.GetConnection();
@@ -276,11 +256,7 @@ namespace ProgressVisualizer.Data
                 id);
 
             command.ExecuteNonQuery();
-        }
-
-        // =========================================================
-        // ПОИСК ГРАФИКОВ
-        // =========================================================
+        } 
 
         public List<Chart> Search(string searchText)
         {

@@ -12,10 +12,6 @@ namespace ProgressVisualizer.Data
             this.db = db;
         }
 
-        // =========================================================
-        // ДОБАВЛЕНИЕ ТОЧКИ
-        // =========================================================
-
         public int Add(DataPoint point)
         {
             using var connection = db.GetConnection();
@@ -54,10 +50,6 @@ namespace ProgressVisualizer.Data
 
             return (int)id;
         }
-
-        // =========================================================
-        // ПОЛУЧЕНИЕ ТОЧЕК ГРАФИКА
-        // =========================================================
 
         public List<DataPoint> GetByChartId(int chartId)
         {
@@ -106,10 +98,6 @@ namespace ProgressVisualizer.Data
             return points;
         }
 
-        // =========================================================
-        // ПОЛУЧЕНИЕ ОДНОЙ ТОЧКИ
-        // =========================================================
-
         public DataPoint? GetById(int id)
         {
             using var connection = db.GetConnection();
@@ -147,10 +135,6 @@ namespace ProgressVisualizer.Data
             };
         }
 
-        // =========================================================
-        // ИЗМЕНЕНИЕ ТОЧКИ
-        // =========================================================
-
         public void Update(DataPoint point)
         {
             using var connection = db.GetConnection();
@@ -179,10 +163,6 @@ namespace ProgressVisualizer.Data
             command.ExecuteNonQuery();
         }
 
-        // =========================================================
-        // УДАЛЕНИЕ ТОЧКИ
-        // =========================================================
-
         public void Delete(int id)
         {
             using var connection = db.GetConnection();
@@ -199,10 +179,6 @@ namespace ProgressVisualizer.Data
 
             command.ExecuteNonQuery();
         }
-
-        // =========================================================
-        // УДАЛЕНИЕ ВСЕХ ТОЧЕК ГРАФИКА
-        // =========================================================
 
         public void DeleteByChartId(int chartId)
         {

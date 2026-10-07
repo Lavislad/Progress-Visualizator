@@ -186,7 +186,6 @@ namespace ProgressVisualizer.Visualization
 
             formsPlot.Plot.YLabel(yLabel);
 
-            // Создаём подписи для текстовой оси X
             var tickPositions = xs;
             var tickLabels = points
                 .Select(p => p.XValue)

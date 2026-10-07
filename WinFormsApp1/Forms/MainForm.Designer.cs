@@ -48,6 +48,8 @@ namespace ProgressVisualizer
         private Button btnEditPoint;
         private Button btnDeletePoint;
 
+        private Button btnHelp;
+
         /// <summary>
         /// Освобождение используемых ресурсов.
         /// </summary>
@@ -82,6 +84,7 @@ namespace ProgressVisualizer
             btnDeleteChart = new Button();
             rightPanel = new Panel();
             pnlChart = new Panel();
+            formsPlot = new FormsPlot();
             chartInfo = new Panel();
             lblChartDescription = new Label();
             lblChartName = new Label();
@@ -94,7 +97,7 @@ namespace ProgressVisualizer
             btnAddPoint = new Button();
             btnEditPoint = new Button();
             btnDeletePoint = new Button();
-            formsPlot = new FormsPlot();
+            btnHelp = new Button();
             ((System.ComponentModel.ISupportInitialize)mainSplit).BeginInit();
             mainSplit.Panel1.SuspendLayout();
             mainSplit.Panel2.SuspendLayout();
@@ -108,11 +111,6 @@ namespace ProgressVisualizer
             ((System.ComponentModel.ISupportInitialize)dgvPoints).BeginInit();
             pointButtons.SuspendLayout();
             SuspendLayout();
-            //
-            // formsPlot
-            //
-            formsPlot.Dock = DockStyle.Fill;
-            pnlChart.Controls.Add(formsPlot);
             // 
             // lblTitle
             // 
@@ -243,12 +241,20 @@ namespace ProgressVisualizer
             // 
             pnlChart.BackColor = Color.WhiteSmoke;
             pnlChart.BorderStyle = BorderStyle.FixedSingle;
-            pnlChart.Controls.Add(lblPlotPlaceholder);
+            pnlChart.Controls.Add(formsPlot);
             pnlChart.Dock = DockStyle.Fill;
             pnlChart.Location = new Point(10, 80);
             pnlChart.Name = "pnlChart";
             pnlChart.Size = new Size(936, 385);
             pnlChart.TabIndex = 0;
+            // 
+            // formsPlot
+            // 
+            formsPlot.Dock = DockStyle.Fill;
+            formsPlot.Location = new Point(0, 0);
+            formsPlot.Name = "formsPlot";
+            formsPlot.Size = new Size(934, 383);
+            formsPlot.TabIndex = 0;
             // 
             // chartInfo
             // 
@@ -334,6 +340,7 @@ namespace ProgressVisualizer
             pointButtons.Controls.Add(btnAddPoint);
             pointButtons.Controls.Add(btnEditPoint);
             pointButtons.Controls.Add(btnDeletePoint);
+            pointButtons.Controls.Add(btnHelp);
             pointButtons.Dock = DockStyle.Bottom;
             pointButtons.Location = new Point(0, 180);
             pointButtons.Name = "pointButtons";
@@ -368,6 +375,16 @@ namespace ProgressVisualizer
             btnDeletePoint.Text = "Удалить";
             btnDeletePoint.Click += BtnDeletePoint_Click;
             // 
+            // btnHelp
+            // 
+            btnHelp.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnHelp.Location = new Point(321, 3);
+            btnHelp.Name = "btnHelp";
+            btnHelp.Size = new Size(100, 30);
+            btnHelp.TabIndex = 1;
+            btnHelp.Text = "Справка";
+            btnHelp.Click += BtnHelp_Click;
+            // 
             // MainForm
             // 
             BackColor = Color.White;
@@ -387,7 +404,6 @@ namespace ProgressVisualizer
             chartButtons.ResumeLayout(false);
             rightPanel.ResumeLayout(false);
             pnlChart.ResumeLayout(false);
-            pnlChart.PerformLayout();
             chartInfo.ResumeLayout(false);
             pointsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvPoints).EndInit();

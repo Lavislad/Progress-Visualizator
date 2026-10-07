@@ -85,6 +85,13 @@ namespace ProgressVisualizer
             LoadPoints(chart);
         }
 
+        private void BtnHelp_Click(object sender, EventArgs e)
+        {
+            using HelpForm form = new HelpForm();
+
+            form.ShowDialog(this);
+        }
+
         private void BtnCreateChart_Click(object sender, EventArgs e)
         {
             using ChartForm form = new ChartForm();
